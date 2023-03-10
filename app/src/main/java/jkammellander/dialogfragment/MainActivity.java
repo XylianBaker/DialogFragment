@@ -6,27 +6,49 @@ import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MyCustomDialogListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // get the standard_button and set a click listener on it
+        // Setting a click listener on the standard_button. When the button is clicked, it gets the
+        // text from the text_input EditText and puts it in a Bundle. Then it creates a new
+        // StandardFragment and sets the Bundle as the arguments. Finally, it shows the fragment.
         findViewById(R.id.standard_button).setOnClickListener(view -> {
-            // show the standard dialog fragment (using the FragmentManager) in the fragment_container
+            String textInput = ((EditText) findViewById(R.id.text_input)).getText().toString();
             StandardFragment fragment = new StandardFragment();
+            Bundle args = new Bundle();
+            args.putString("text", textInput);
+            fragment.setArguments(args);
             fragment.show(getSupportFragmentManager(), StandardFragment.TAG);
         });
 
-        // get the custom_button and set a click listener on it
+        // Setting a click listener on the custom_button. When the button is clicked, it gets the
+        // text from the text_input EditText and puts it in a Bundle. Then it creates a new
+        // CustomFragment and sets the Bundle as the arguments. Finally, it shows the fragment.
         findViewById(R.id.custom_button).setOnClickListener(view -> {
-            // show the custom dialog fragment (using the FragmentManager) in the fragment_container
+            String textInput = ((EditText) findViewById(R.id.text_input)).getText().toString();
             CustomFragment fragment = new CustomFragment();
+            Bundle args = new Bundle();
+            args.putString("text", textInput);
+            fragment.setArguments(args);
             fragment.show(getSupportFragmentManager(), CustomFragment.TAG);
         });
 
+    }
+
+    /**
+     * When the dialog is finished, set the text of the TextView to the inputText.
+     *
+     * @param inputText The text that the user entered in the dialog.
+     */
+    @Override
+    public void onFinishedDialog(String inputText) {
+        ((TextView) findViewById(R.id.textView)).setText(inputText);
     }
 }
